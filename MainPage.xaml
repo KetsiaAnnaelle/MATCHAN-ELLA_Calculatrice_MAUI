@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Calculatrice.MainPage">
+
+    <!-- Fond : aluminium brossé -->
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#E9EBE7" Offset="0" />
+            <GradientStop Color="#CBD0CB" Offset="1" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ContentPage.Resources>
+        <x:Double x:Key="KeyFontSize">26</x:Double>
+        <x:Double x:Key="SciFontSize">15</x:Double>
+        <Thickness x:Key="KeyMargin">5</Thickness>
+        <Thickness x:Key="SciMargin">4</Thickness>
+        <x:Double x:Key="KeyMinSize">44</x:Double>
+
+        <!-- Retour tactile commun : la touche s'enfonce à l'appui -->
+        <VisualStateGroupList x:Key="PressStates">
+            <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Normal">
+                    <VisualState.Setters>
+                        <Setter Property="Scale" Value="1" />
+                        <Setter Property="Opacity" Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Pressed">
+                    <VisualState.Setters>
+                        <Setter Property="Scale" Value="0.94" />
+                        <Setter Property="Opacity" Value="0.88" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateGroupList>
+
+        <Shadow x:Key="KeyShadow" Brush="#1B2220" Offset="0,3" Radius="5" Opacity="0.30" />
+
+        <!-- Style de base -->
+        <Style x:Key="KeyBase" TargetType="Button">
+            <Setter Property="FontFamily" Value="GroteskMedium" />
+            <Setter Property="FontSize" Value="{DynamicResource KeyFontSize}" />
+            <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="Margin" Value="{DynamicResource KeyMargin}" />
+            <Setter Property="MinimumHeightRequest" Value="{DynamicResource KeyMinSize}" />
+            <Setter Property="MinimumWidthRequest" Value="{DynamicResource KeyMinSize}" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BorderWidth" Value="0" />
+            <Setter Property="Shadow" Value="{StaticResource KeyShadow}" />
+            <Setter Property="VisualStateManager.VisualStateGroups" Value="{StaticResource PressStates}" />
+        </Style>
+
+        <!-- Chiffres : porcelaine claire -->
+        <Style x:Key="DigitStyle" TargetType="Button" BasedOn="{StaticResource KeyBase}">
+            <Setter Property="TextColor" Value="#1E2224" />
+            <Setter Property="Background">
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#FDFDFB" Offset="0" />
+                    <GradientStop Color="#E8EAE6" Offset="1" />
+                </LinearGradientBrush>
+            </Setter>
+        </Style>
+
+        <!-- Fonctions : aluminium mat -->
+        <Style x:Key="FuncStyle" TargetType="Button" BasedOn="{StaticResource KeyBase}">
+            <Setter Property="TextColor" Value="#1E2224" />
+            <Setter Property="Background">
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#D3D7D2" Offset="0" />
+                    <GradientStop Color="#B7BCB7" Offset="1" />
+                </LinearGradientBrush>
+            </Setter>
+        </Style>
+
+        <!-- Opérateurs : graphite -->
+        <Style x:Key="OpStyle" TargetType="Button" BasedOn="{StaticResource KeyBase}">
+            <Setter Property="TextColor" Value="#F2F4F1" />
+            <Setter Property="Background">
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#50575A" Offset="0" />
+                    <GradientStop Color="#33393C" Offset="1" />
+                </LinearGradientBrush>
+            </Setter>
+        </Style>
+
+        <!-- Égal : la seule touche colorée du clavier principal -->
+        <Style x:Key="EqualStyle" TargetType="Button" BasedOn="{StaticResource KeyBase}">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="Background">
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#FF7A3D" Offset="0" />
+                    <GradientStop Color="#E4531A" Offset="1" />
+                </LinearGradientBrush>
+            </Setter>
+        </Style>
+
+        <!-- Fonctions scientifiques : vert-de-gris, assorti à l'afficheur -->
+        <Style x:Key="SciStyle" TargetType="Button" BasedOn="{StaticResource KeyBase}">
+            <Setter Property="FontSize" Value="{DynamicResource SciFontSize}" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Margin" Value="{DynamicResource SciMargin}" />
+            <Setter Property="TextColor" Value="#D4F8E3" />
+            <Setter Property="Background">
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#3A5E56" Offset="0" />
+                    <GradientStop Color="#223A36" Offset="1" />
+                </LinearGradientBrush>
+            </Setter>
+        </Style>
+
+        <!-- Bouton-pilule de la barre de titre -->
+        <Style x:Key="PillStyle" TargetType="Button">
+            <Setter Property="FontFamily" Value="GroteskMedium" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextColor" Value="#2B2F31" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="BorderColor" Value="#8E948F" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="HeightRequest" Value="28" />
+            <Setter Property="MinimumHeightRequest" Value="28" />
+            <Setter Property="Padding" Value="14,0" />
+        </Style>
+    </ContentPage.Resources>
+
+    <!-- LAYOUT 1 : Grid racine (titre / instrument / clavier) -->
+        <Grid x:Name="RootGrid" RowDefinitions="Auto,2*,5*" ColumnDefinitions="*"
+            MaximumWidthRequest="1120" HorizontalOptions="Center" Padding="14,10,14,14">
+
+        <!-- LAYOUT 2 : HorizontalStackLayout (barre de titre + bouton Scientifique) -->
+        <HorizontalStackLayout x:Name="TitleBar" Grid.Row="0" Spacing="14" Margin="8,4,0,10">
+            <Label x:Name="AppTitle" Text="Calculatrice" FontFamily="GroteskMedium" FontSize="15" TextColor="#2B2F31" VerticalOptions="Center" />
+            <Button x:Name="SciToggle" Text="Scientifique" Style="{StaticResource PillStyle}" Clicked="OnSciToggle" />
+        </HorizontalStackLayout>
+
+        <!-- LAYOUT 3 : Border (cadre métallique de l'instrument) -->
+        <Border x:Name="DisplayPanel" Grid.Row="1" StrokeThickness="0" Padding="3">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#A9AFA9" Offset="0" />
+                    <GradientStop Color="#F3F5F1" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="26" />
+            </Border.StrokeShape>
+
+            <!-- Verre de l'afficheur -->
+            <Border x:Name="DisplayGlass" StrokeThickness="0" Padding="18,12,18,10">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#0B1413" Offset="0" />
+                        <GradientStop Color="#15211F" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="23" />
+                </Border.StrokeShape>
+
+                <Grid RowDefinitions="Auto,*,Auto" RowSpacing="4">
+
+                    <!-- Voyant d'état -->
+                    <HorizontalStackLayout Grid.Row="0" Spacing="8">
+                        <BoxView x:Name="StateDot" WidthRequest="8" HeightRequest="8" CornerRadius="4"
+                                 Color="#7BE3B0" VerticalOptions="Center" />
+                        <Label x:Name="StatusLabel" Text="Prêt" FontFamily="Grotesk" FontSize="12"
+                               TextColor="#6E9A8B" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <!-- LAYOUT 4 : VerticalStackLayout (opération au-dessus du résultat) -->
+                    <VerticalStackLayout Grid.Row="1" VerticalOptions="End" Spacing="0">
+
+                        <!-- LAYOUT 5 : ScrollView horizontal (aucun débordement) -->
+                        <ScrollView x:Name="ExprScroll" Orientation="Horizontal"
+                                    HorizontalScrollBarVisibility="Never" SizeChanged="OnScrollSizeChanged">
+                            <Label x:Name="ExpressionLabel" Text="" FontFamily="Grotesk" FontSize="20"
+                                   TextColor="#6E9A8B" HorizontalTextAlignment="End" LineBreakMode="NoWrap" />
+                        </ScrollView>
+
+                        <ScrollView x:Name="ResultScroll" Orientation="Horizontal"
+                                    HorizontalScrollBarVisibility="Never" SizeChanged="OnScrollSizeChanged">
+                            <Label x:Name="ResultLabel" Text="0" FontFamily="Grotesk" FontSize="56"
+                                   TextColor="#D4F8E3" HorizontalTextAlignment="End" LineBreakMode="NoWrap" />
+                        </ScrollView>
+                    </VerticalStackLayout>
+
+                    <!-- Jauge de saisie : 15 graduations = 15 chiffres maximum -->
+                    <Grid x:Name="TickRow" Grid.Row="2" HeightRequest="14" Margin="0,2,0,0" />
+                </Grid>
+            </Border>
+        </Border>
+
+        <!-- Zone des touches : le code-behind place le panneau scientifique
+             au-dessus du clavier (portrait) ou à sa gauche (paysage) -->
+        <Grid x:Name="KeysArea" Grid.Row="2" Margin="0,10,0,0"
+              RowDefinitions="0,5*" ColumnDefinitions="*,0">
+
+            <!-- Panneau scientifique : 4 lignes x 4 colonnes -->
+            <Grid x:Name="SciGrid" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="False"
+                  RowDefinitions="*,*,*,*" ColumnDefinitions="*,*,*,*">
+
+                <Button Grid.Row="0" Grid.Column="0" Text="√"   Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+                <Button Grid.Row="0" Grid.Column="1" Text="x²"  Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+                <Button Grid.Row="0" Grid.Column="2" Text="x^y" Style="{StaticResource SciStyle}" Clicked="OnOperator" />
+                <Button Grid.Row="0" Grid.Column="3" Text="1/x" Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+
+                <Button Grid.Row="1" Grid.Column="0" Text="sin" Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+                <Button Grid.Row="1" Grid.Column="1" Text="cos" Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+                <Button Grid.Row="1" Grid.Column="2" Text="tan" Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+                <Button Grid.Row="1" Grid.Column="3" Text="n!"  Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+
+                <Button Grid.Row="2" Grid.Column="0" Text="ln"  Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+                <Button Grid.Row="2" Grid.Column="1" Text="log" Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+                <Button Grid.Row="2" Grid.Column="2" Text="π"   Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+                <Button Grid.Row="2" Grid.Column="3" Text="e"   Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+
+                <Button x:Name="AngleButton" Grid.Row="3" Grid.Column="0" Text="Deg" Style="{StaticResource SciStyle}" Clicked="OnAngleMode" />
+                <Button Grid.Row="3" Grid.Column="1" Text="|x|"  Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+                <Button Grid.Row="3" Grid.Column="2" Text="e^x" Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+                <Button Grid.Row="3" Grid.Column="3" Text="10^x" Style="{StaticResource SciStyle}" Clicked="OnScientific" />
+            </Grid>
+
+            <!-- Clavier principal : 5 lignes x 4 colonnes -->
+            <Grid x:Name="KeypadGrid" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                  RowDefinitions="*,*,*,*,*" ColumnDefinitions="*,*,*,*">
+
+                <Button Grid.Row="0" Grid.Column="0" Text="C" Style="{StaticResource FuncStyle}" Clicked="OnClear" />
+                <Button Grid.Row="0" Grid.Column="1" Text="⌫" Style="{StaticResource FuncStyle}" Clicked="OnBackspace" />
+                <Button Grid.Row="0" Grid.Column="2" Text="%" Style="{StaticResource FuncStyle}" Clicked="OnPercent" />
+                <Button Grid.Row="0" Grid.Column="3" Text="÷" Style="{StaticResource OpStyle}" Clicked="OnOperator" />
+
+                <Button Grid.Row="1" Grid.Column="0" Text="7" Style="{StaticResource DigitStyle}" Clicked="OnDigit" />
+                <Button Grid.Row="1" Grid.Column="1" Text="8" Style="{StaticResource DigitStyle}" Clicked="OnDigit" />
+                <Button Grid.Row="1" Grid.Column="2" Text="9" Style="{StaticResource DigitStyle}" Clicked="OnDigit" />
+                <Button Grid.Row="1" Grid.Column="3" Text="×" Style="{StaticResource OpStyle}" Clicked="OnOperator" />
+
+                <Button Grid.Row="2" Grid.Column="0" Text="4" Style="{StaticResource DigitStyle}" Clicked="OnDigit" />
+                <Button Grid.Row="2" Grid.Column="1" Text="5" Style="{StaticResource DigitStyle}" Clicked="OnDigit" />
+                <Button Grid.Row="2" Grid.Column="2" Text="6" Style="{StaticResource DigitStyle}" Clicked="OnDigit" />
+                <Button Grid.Row="2" Grid.Column="3" Text="−" Style="{StaticResource OpStyle}" Clicked="OnOperator" />
+
+                <Button Grid.Row="3" Grid.Column="0" Text="1" Style="{StaticResource DigitStyle}" Clicked="OnDigit" />
+                <Button Grid.Row="3" Grid.Column="1" Text="2" Style="{StaticResource DigitStyle}" Clicked="OnDigit" />
+                <Button Grid.Row="3" Grid.Column="2" Text="3" Style="{StaticResource DigitStyle}" Clicked="OnDigit" />
+                <Button Grid.Row="3" Grid.Column="3" Text="+" Style="{StaticResource OpStyle}" Clicked="OnOperator" />
+
+                <Button Grid.Row="4" Grid.Column="0" Text="±" Style="{StaticResource FuncStyle}" Clicked="OnSign" />
+                <Button Grid.Row="4" Grid.Column="1" Text="0" Style="{StaticResource DigitStyle}" Clicked="OnDigit" />
+                <Button Grid.Row="4" Grid.Column="2" Text="." Style="{StaticResource DigitStyle}" Clicked="OnDecimal" />
+                <Button Grid.Row="4" Grid.Column="3" Text="=" Style="{StaticResource EqualStyle}" Clicked="OnEquals" />
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>
